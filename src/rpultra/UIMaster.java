@@ -29,6 +29,7 @@ public class UIMaster extends JFrame {
         textFieldy = new JTextField("0");
 
         placementPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        placementPanel.addMouseListener(new PlacementPanelMouseAdapter());
 
         buttonAddZone.addMouseListener(new MouseAdapter() {
             @Override
@@ -59,6 +60,12 @@ public class UIMaster extends JFrame {
     static void refreshGraphics() {
         panelMaster.repaint();
         panelMaster.validate();
+    }
+
+    static void setCoordinates(int x, int y) {
+        textFieldx.setText(Integer.toString(x));
+        textFieldy.setText(Integer.toString(y));
+        refreshGraphics();
     }
 
     private static JPanel panelMaster;
