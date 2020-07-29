@@ -4,12 +4,10 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class UIMaster extends JFrame {
     private PlacementPanel placementPanel;
+    private ZoneManager zoneManager;
 
     public UIMaster() {
         this.setTitle("RPUltra");
@@ -22,33 +20,30 @@ public class UIMaster extends JFrame {
     }
 
     private void initComponents() {
-        panelMaster = new JPanel(new MigLayout());
+        panelLayoutTab = new JPanel(new MigLayout());
+        panelRosterTab = new JPanel(new MigLayout());
+        tabbedPaneMaster = new JTabbedPane(JTabbedPane.LEFT);
         placementPanel = new PlacementPanel();
-        buttonAddZone = new JButton("Add Zone");
-        textFieldx = new JTextField("0");
-        textFieldy = new JTextField("0");
+        zoneManager = new ZoneManager();
 
         placementPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         placementPanel.addMouseListener(new PlacementPanelMouseAdapter());
 
-        buttonAddZone.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                placementPanel.addRectangularZone(100, 100, 300, 300, Color.RED);
-                placementPanel.addCircularZone( 400, 100, 50, Color.BLUE);
-                refreshGraphics();
-            }
-        });
-
-
     }
 
     private void addComponents() {
-        this.add(panelMaster);
-        panelMaster.add(textFieldx, "width 100");
-        panelMaster.add(textFieldy, "width 100");
-        panelMaster.add(buttonAddZone, "wrap");
-        panelMaster.add(placementPanel, "span 3, width 800, height 600");
+        this.add(tabbedPaneMaster);
+
+        tabbedPaneMaster.addTab("Raid Layout", panelLayoutTab);
+        tabbedPaneMaster.addTab("Roster", panelRosterTab);
+    }
+
+    private void initLayoutTab() {
+        panelLayoutTab.add(zoneManager, "width 500");
+        panelLayoutTab.add(placementPanel, "width 800, height 600");
+    }
+
+    private void initRosterTab() {
 
     }
 
@@ -58,18 +53,15 @@ public class UIMaster extends JFrame {
     }
 
     static void refreshGraphics() {
-        panelMaster.repaint();
-        panelMaster.validate();
+        panelLayoutTab.repaint();
+        panelLayoutTab.validate();
     }
 
     static void setCoordinates(int x, int y) {
-        textFieldx.setText(Integer.toString(x));
-        textFieldy.setText(Integer.toString(y));
         refreshGraphics();
     }
 
-    private static JPanel panelMaster;
-    private static JButton buttonAddZone;
-    private static JTextField textFieldx;
-    private static JTextField textFieldy;
+    private static JPanel panelLayoutTab;
+    private static JPanel panelRosterTab;
+    private static JTabbedPane tabbedPaneMaster;
 }

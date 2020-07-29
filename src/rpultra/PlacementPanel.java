@@ -162,4 +162,11 @@ public class PlacementPanel extends JPanel {
             }
         }
     }
+
+    private class PlacementPanelMouseAdapter extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent me) {
+
+        }
+    }
 }

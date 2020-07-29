@@ -3,17 +3,13 @@ package rpultra;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ZoneManager extends JPanel {
-    private final String[] ZONE_COLUMN_NAMES = {
-            "Name",
-            "Icon",
-            "Colour",
-            "Vertices"
-    };
-    private ArrayList<Zone> zones;
+    private static ArrayList<Zone> zones;
 
     public ZoneManager() {
         super(new MigLayout());
@@ -25,23 +21,50 @@ public class ZoneManager extends JPanel {
 
     private void initComponents() {
         panelZoneDetails = new JPanel(new MigLayout());
-        buttonNewZone = new JButton("New");
-        buttonDeleteZone = new JButton("Delete");
-        tableZones = new JTable(null, ZONE_COLUMN_NAMES);
+        buttonAddZone = new JButton("Add Zone");
+        buttonDeleteZone = new JButton("Delete Zone");
+        buttonAddVertex = new JButton("Add Vertex");
+        buttonDeleteVertex = new JButton("Delete Vertex");
+        tableZones = new JTable(new ZoneManagerTableModel());
+        scrollPaneZones = new JScrollPane(tableZones);
+        DefaultMutableTreeNode verticesRoot = new DefaultMutableTreeNode("Vertices:");
+        treeVertices = new JTree(verticesRoot);
+        scrollPaneVertices = new JScrollPane(treeVertices);
     }
 
     private void addComponents() {
-        this.add(panelZoneDetails, "wrap");
-        this.add(tableZones);
+        //this.add(panelZoneDetails, "wrap");
+        this.add(new JScrollPane(tableZones), "grow");
 
-        panelZoneDetails.add(textFieldZoneName);
+        //panelZoneDetails.add(textFieldZoneName);
+    }
+
+    void addZone(Zone zone) {
+        zones.add(zone);
+        ZoneManagerTableModel tableModel = (ZoneManagerTableModel) tableZones.getModel();
+        String zoneName = "Zone" + (zones.size() - 1);
+    }
+
+    private class ZoneAddedActionListener implements ActionListener {
+        JButton button;
+
+        public ZoneAddedActionListener(JButton button) {
+            this.button = button;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
     }
 
     private static JPanel panelZoneDetails;
+    private static JScrollPane scrollPaneZones;
+    private static JScrollPane scrollPaneVertices;
     private static JTable tableZones;
-    private static JTextField textFieldZoneName;
-    private static JTextField textFieldZoneX;
-    private static JTextField textFieldZoneY;
-    private static JButton buttonNewZone;
+    private static JTree treeVertices;
+    private static JButton buttonAddVertex;
+    private static JButton buttonAddZone;
     private static JButton buttonDeleteZone;
+    private static JButton buttonDeleteVertex;
 }
